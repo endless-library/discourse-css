@@ -11,6 +11,11 @@
   background: var(--tertiary-hover);
 }
 
+/* idk how to remove Docs the right way so its gonna be this */
+html.anon .sidebar-section-link-wrapper:has([data-link-name="Docs"]) {
+  display: none;
+}
+
 /* ------------------------------------------------------------------
    Sidebar rail (Instagram-style)
    On desktop with a mouse, the sidebar shows as a narrow icon rail and
