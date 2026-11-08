@@ -121,6 +121,16 @@ $rail-open: ":hover, :has(:focus-visible), :has(.sidebar-more-section-trigger[ar
   }
 }
 
+// black sidebar edge and section dividers (applies with or without the rail)
+body .sidebar-wrapper {
+  .sidebar-container {
+    border-right-color: #000;
+  }
+  .sidebar-section-wrapper {
+    border-bottom-color: #000;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   body.has-sidebar-page .sidebar-wrapper,
   body.has-sidebar-page .sidebar-wrapper * {
