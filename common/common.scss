@@ -44,7 +44,6 @@ $rail-open: ":hover, :has(:focus-visible), :has(.sidebar-more-section-trigger[ar
         background: var(--d-sidebar-background);
         transition:
           width var(--el-rail-speed) ease var(--el-rail-delay),
-          box-shadow var(--el-rail-speed) ease var(--el-rail-delay);
       }
 
       // keep the inside laid out at full width so nothing reflows while opening
@@ -70,7 +69,6 @@ $rail-open: ":hover, :has(:focus-visible), :has(.sidebar-more-section-trigger[ar
       // ---------- open ----------
       &:is(#{$rail-open}) .sidebar-container {
         width: var(--el-rail-expanded);
-        box-shadow: 4px 0 18px rgba(0, 0, 0, 0.08);
       }
 
       // ---------- collapsed rail ----------
