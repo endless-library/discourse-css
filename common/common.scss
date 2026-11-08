@@ -36,6 +36,16 @@ $rail-open: ":hover, :has(:focus-visible), :has(.sidebar-more-section-trigger[ar
     // Discourse sizes the grid column, the sidebar and the composer offset from this
     --d-sidebar-width: var(--el-rail-width);
 
+    // ...but the header's logo column also reads --d-sidebar-width, so give it
+    // back Discourse's normal width or the logo gets squeezed to nothing
+    .d-header-wrap {
+      --d-sidebar-width: var(--el-rail-expanded);
+
+      @media (max-width: 64rem) {
+        --d-sidebar-width: 14em;
+      }
+    }
+
     .sidebar-wrapper {
       z-index: 999; // above page content, below the header (1000)
       overflow: visible;
