@@ -10,3 +10,120 @@
 .nav-item_subscribe a:hover {
   background: var(--tertiary-hover);
 }
+
+/* ------------------------------------------------------------------
+   Sidebar rail (Instagram-style)
+   On desktop with a mouse, the sidebar shows as a narrow icon rail and
+   expands over the page on hover, on keyboard focus, or while the
+   "More" menu is open. Touch devices, narrow screens, the admin area
+   and the hamburger "hide sidebar" toggle are left as Discourse has them.
+   ------------------------------------------------------------------ */
+
+$rail-open: ":hover, :has(:focus-visible), :has(.sidebar-more-section-trigger[aria-expanded='true'])";
+
+@media (hover: hover) and (pointer: fine) and (min-width: 48rem) {
+  body.has-sidebar-page:not(.admin-interface) {
+    --el-rail-width: 3.5em;
+    --el-rail-expanded: 17em;
+    --el-rail-speed: 0.18s;
+    --el-rail-delay: 0.08s; // small hover-intent pause so passing the mouse over doesn't flash it open
+
+    // Discourse sizes the grid column, the sidebar and the composer offset from this
+    --d-sidebar-width: var(--el-rail-width);
+
+    .sidebar-wrapper {
+      z-index: 999; // above page content, below the header (1000)
+      overflow: visible;
+
+      // the wrapper always stays rail-width (so the page layout never moves);
+      // only the panel inside it grows, overlaying the content
+      .sidebar-container {
+        flex-shrink: 0;
+        width: var(--el-rail-width);
+        overflow-x: hidden;
+        background: var(--d-sidebar-background);
+        transition:
+          width var(--el-rail-speed) ease var(--el-rail-delay),
+          box-shadow var(--el-rail-speed) ease var(--el-rail-delay);
+      }
+
+      // keep the inside laid out at full width so nothing reflows while opening
+      .sidebar-sections,
+      .sidebar-footer-wrapper {
+        width: var(--el-rail-expanded);
+        min-width: var(--el-rail-expanded);
+      }
+
+      .sidebar-section-link-content-text,
+      .sidebar-section-link-suffix,
+      .sidebar-section-link-content-badge,
+      .sidebar-section-header-wrapper > *,
+      .sidebar-footer-wrapper {
+        transition: opacity var(--el-rail-speed) ease var(--el-rail-delay);
+      }
+
+      .sidebar-section-link {
+        position: relative;
+        transition: width var(--el-rail-speed) ease var(--el-rail-delay);
+      }
+
+      // ---------- open ----------
+      &:is(#{$rail-open}) .sidebar-container {
+        width: var(--el-rail-expanded);
+        box-shadow: 4px 0 18px rgba(0, 0, 0, 0.08);
+      }
+
+      // ---------- collapsed rail ----------
+      &:not(#{$rail-open}) {
+        // labels, counts, carets and footer fade out but keep their space
+        .sidebar-section-link-content-text,
+        .sidebar-section-link-suffix,
+        .sidebar-section-header-wrapper > *,
+        .sidebar-footer-wrapper {
+          opacity: 0;
+          pointer-events: none;
+        }
+
+        // row highlight only as wide as the icon
+        .sidebar-section-link {
+          width: calc(var(--el-rail-width) - 1em);
+        }
+
+        // unread / new counts shrink to a dot on the icon
+        .sidebar-section-link-content-badge,
+        .sidebar-section-link-suffix.unread {
+          opacity: 1;
+          position: absolute;
+          top: 0.35em;
+          left: 1.75em;
+          width: 0.5em;
+          height: 0.5em;
+          min-width: 0;
+          padding: 0;
+          margin: 0;
+          font-size: 1em;
+          line-height: 0;
+          color: transparent;
+          overflow: hidden;
+          border-radius: 50%;
+          background: var(--tertiary);
+
+          .d-icon {
+            display: none;
+          }
+        }
+
+        .sidebar-sections {
+          scrollbar-width: none;
+        }
+      }
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.has-sidebar-page .sidebar-wrapper,
+  body.has-sidebar-page .sidebar-wrapper * {
+    transition: none !important;
+  }
+}
